@@ -19,8 +19,12 @@ html(lang="en")
                 .panel.lista-proyectos
                     h2 Proyectos
                     ul#proyectos.proyectos
-                        li
-                            a(href="#") Diseño1
-                        li
-                            a(href="#") Programar API
+                        if(proyectos.length)
+                            each proyecto in proyectos
+                                li
+                                    a(href=`/proyectos/${proyecto.url}`)= proyecto.nombre
             block contenido
+
+        
+        script(src="/dist/bundle.js")
+        

@@ -8,6 +8,9 @@ const { body } = require('express-validator/check');
 // importar controlador
 
 const proyectsController = require('../controllers/proyectsController');
+const tareasController = require('../controllers/tareasController');
+
+const Proyectos = require('../models/Proyects');
 
 
 module.exports = function () {
@@ -18,6 +21,21 @@ module.exports = function () {
     router.post('/nuevo-proyecto',
     body('nombre').not().isEmpty().trim().escape(),
     proyectsController.newProyect);
+
+    // Listo proyecto
+    router.get('/proyectos/:url', proyectsController.proyectoPorUrl);
+
+    //Actualizar proyecto
+    router.get('/proyecto/editar/:id', proyectsController.formularioEditar);
+    router.post('/nuevo-proyecto/:id', 
+    body('nombre').not().isEmpty().trim().escape(), proyectsController.actualizarProyecto);
+
+    //Eliminar proyecto
+    router.delete('/proyectos/:url', proyectsController.eliminarProyecto);
+
+    //Tareas 
+    router.post('/proyectos/:url', tareasController.agregarTarea);
+
 
     return router;
 }
