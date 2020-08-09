@@ -13,6 +13,7 @@ const db = require('./config/db');
 // Importando modelo
 require('./models/Proyects'); 
 require('./models/Tareas');
+require('./models/Usuarios');
 db.sync() // crea la estructura del proyecto
 
     .then(() => console.log('Conectado al servidor'))
