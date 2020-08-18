@@ -4,6 +4,11 @@ const path = require ('path'); // lee el filesystem, archivos carpetas
 // crear app contiene todo lo necesario de express
 const app = express();
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('./config/passport');
 
 const helpers = require('./helpers');
 
@@ -14,6 +19,7 @@ const db = require('./config/db');
 require('./models/Proyects'); 
 require('./models/Tareas');
 require('./models/Usuarios');
+
 db.sync() // crea la estructura del proyecto
 
     .then(() => console.log('Conectado al servidor'))
@@ -22,20 +28,39 @@ db.sync() // crea la estructura del proyecto
 //Donde cargar archivos estaticos
 app.use(express.static('public')); 
 
+// Habilitar leer informacion del formulario bodyparser
+app.use(bodyParser.urlencoded({extended: true}));
+
 // Habilitar pug
 app.set('view engine', 'pug');
 // Añadir carpeta vistas
 app.set('views',path.join(__dirname, './views')); // lee lo de views
 
+// agregar flash messages
+app.use(flash());
+
+app.use(cookieParser());
+
+app.use(session({ // para mantener sesion viva aunque no haga nada, navegar entre paginas
+    secret :'super',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session()); 
+
+
+
 // pasar vardump a la app
 app.use((req, res, next) => {
+    console.log(req.user);
     res.locals.vardump = helpers.vardump; // creo variable local para intercambiar internamente
+    res.locals.mensajes = req.flash();
+    res.locals.usuario = {...req.user} || null;
+    console.log(res.locals.usuario);
     next();
 });
-
-
-// Habilitar leer informacion del formulario bodyparser
-app.use(bodyParser.urlencoded({extended: true}));
 
 // rutas para el home
 app.use('/',routes());
