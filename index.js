@@ -74,8 +74,9 @@ app.use('/',routes());
 // Servidor y puerto para deploy
 
 const host = process.env.HOST || '0.0.0.0';
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(port, host, () => {
+app.listen(PORT, host, () => {
     console.log('El servidor está funcionando'); 
 })
+

@@ -1,6 +1,8 @@
 .idea
 dist/
 
+variables.env
+
 # Logs
 logs
 *.log
