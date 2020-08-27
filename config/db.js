@@ -1,10 +1,13 @@
 const { Sequelize } = require('sequelize');
 
-var db = new Sequelize('uptask', 'root', '', {
-    host: 'localhost',
+// extraer valores del variables.env
+
+require('dotenv').config({path: 'variables.env'})
+
+var db = new Sequelize(process.env.BD_NOMBRE, process.env.BD_USER, process.env.BD_PASS, {
+    host: process.env.BD_HOST,
     dialect: 'mysql',
-    port: 3306,
-    operatorsAliases: false,
+    port:process.env.BD_PORT ,
     define:{
         timestamps: false
     },
